@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Asesmen Formatif IPAS Kelas 5 - Sistem Pernapasan</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#fdf3ef;--card:#fff;--tx:#2b1512;--mu:#7a5a54;--pr:#a63a2b;--prt:#fff;--bd:#e8cfc8;--ok:#1f7a45;--okb:#dff3e6;--no:#b3261e;--nob:#fbe0de}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d0f0d;--card:#2b1816;--tx:#f6e8e4;--mu:#c3a39b;--pr:#e0654f;--prt:#1d0f0d;--bd:#4a2b27;--ok:#6fd49a;--okb:#16341f;--no:#ff8a80;--nob:#401a18}}
+:root[data-theme="dark"]{--bg:#1d0f0d;--card:#2b1816;--tx:#f6e8e4;--mu:#c3a39b;--pr:#e0654f;--prt:#1d0f0d;--bd:#4a2b27;--ok:#6fd49a;--okb:#16341f;--no:#ff8a80;--nob:#401a18}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+.w{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:.2em 0}h2{font-size:1.1rem;margin:1.6em 0 .6em;color:var(--pr)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:12px 0}
+.mu{color:var(--mu);font-size:.9rem}
+input[type=text],select,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+textarea{min-height:90px}
+label.o{display:block;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;margin:6px 0;cursor:pointer}
+label.o input{margin-right:8px}
+button{background:var(--pr);color:var(--prt);border:0;border-radius:10px;padding:12px 20px;font:inherit;font-weight:600;cursor:pointer}
+button.s{background:transparent;color:var(--pr);border:1px solid var(--pr)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:5}
+.bar i{display:block;height:8px;border-radius:8px;background:var(--pr);width:0;transition:width .3s}
+.bar div{background:var(--bd);border-radius:8px}
+.q{font-weight:600;margin-bottom:8px}.pt{float:right;font-size:.8rem;color:var(--mu)}
+.ok{background:var(--okb)!important;border-color:var(--ok)!important}.no{background:var(--nob)!important;border-color:var(--no)!important}
+.fb{margin-top:10px;font-size:.92rem;padding:10px;border-radius:8px;background:var(--bg);border:1px dashed var(--bd)}
+.big{font-size:3rem;font-weight:800;color:var(--pr);margin:0}
+table{width:100%;border-collapse:collapse}td{padding:6px;border-bottom:1px solid var(--bd)}
+.row{display:flex;gap:10px;align-items:center;margin:8px 0}.row span{flex:1}.row select{flex:0 0 55%}
+.hid{display:none}
+@media print{.bar,button{display:none}}
+</style></head><body><div class="w">
+
+<div id="start" class="card">
+<h1>Asesmen Formatif IPAS</h1>
+<p class="mu">Fase C · Kelas 5 · Sistem Pernapasan Manusia<br>20 soal · Skor maksimal 100</p>
+<p><b>Tujuan:</b> menjelaskan fungsi hidung, batang tenggorok, dan paru-paru serta urutan alur udara.</p>
+<p><label>Nama<br><input type="text" id="nm" placeholder="Tulis nama lengkapmu"></label></p>
+<p><label>Kelas<br><input type="text" id="kl" placeholder="Contoh: 5A"></label></p>
+<p id="err" class="mu" style="color:var(--no)"></p>
+<button onclick="mulai()">Mulai Mengerjakan</button>
+</div>
+
+<div id="quiz" class="hid">
+<div class="bar"><div><i id="pg"></i></div><div class="mu" id="pt" style="background:none;margin-top:4px"></div></div>
+<div id="soal"></div>
+<button onclick="selesai()" style="width:100%;margin:20px 0">Kumpulkan Jawaban</button>
+</div>
+
+<div id="hasil" class="hid"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const PG=[
+{q:"Perhatikan gambar. Organ yang ditunjuk huruf C adalah ...",o:["jantung","lambung","paru-paru","batang tenggorok"],k:2,s:3,img:1,e:"Huruf C menunjuk paru-paru."},
+{q:"Rambut halus dan lendir di dalam hidung berfungsi untuk ...",o:["menyaring debu agar tidak ikut masuk","mengambil oksigen dari udara","mengalirkan udara ke paru-paru","mengeluarkan karbon dioksida"],k:0,s:4,e:"Rambut halus dan lendir menyaring debu."},
+{q:"Batang tenggorok berfungsi sebagai ...",o:["tempat oksigen diambil dari udara","saluran udara dari hidung menuju paru-paru","penyaring debu dan kuman","tempat karbon dioksida dikeluarkan"],k:1,s:3,e:"Batang tenggorok adalah saluran udara menuju paru-paru."},
+{q:"Selain mengambil oksigen, paru-paru juga bertugas ...",o:["menyaring debu","mengeluarkan karbon dioksida dari tubuh","menghangatkan udara","mengalirkan udara ke hidung"],k:1,s:3,e:"Paru-paru mengambil oksigen dan mengeluarkan karbon dioksida."},
+{q:"Urutan jalur udara saat menarik napas adalah ...",o:["hidung → paru-paru → batang tenggorok","batang tenggorok → hidung → paru-paru","hidung → batang tenggorok → paru-paru","paru-paru → batang tenggorok → hidung"],k:2,s:5,e:"Hidung → batang tenggorok → paru-paru."}];
+const OP={A:"Oksigen",B:"Hidung",C:"Jantung",D:"Paru-paru",E:"Karbon dioksida",F:"Batang tenggorok"};
+const MJ=[
+{q:"Tempat udara masuk ke tubuh dan menyaring debu",k:"B"},
+{q:"Saluran udara yang menghubungkan hidung dengan paru-paru",k:"F"},
+{q:"Zat yang dikeluarkan tubuh saat mengembuskan napas",k:"E"},
+{q:"Tempat oksigen diambil dari udara",k:"D"},
+{q:"Zat dalam udara yang dibutuhkan tubuh untuk menghasilkan tenaga",k:"A"}];
+const MS=3;
+const BS=[
+{q:"Hidung menyaring debu dengan bantuan rambut halus dan lendir.",k:true,s:2,e:"Benar. Rambut halus dan lendir menjadi penyaring debu."},
+{q:"Batang tenggorok adalah tempat oksigen diambil dari udara.",k:false,s:3,e:"Salah. Oksigen diambil di paru-paru; batang tenggorok hanya saluran udara."},
+{q:"Saat mengembuskan napas, udara bergerak dari paru-paru, batang tenggorok, lalu keluar lewat hidung.",k:true,s:3,e:"Benar. Arahnya berlawanan dengan saat menarik napas."},
+{q:"Karbon dioksida adalah zat yang diambil paru-paru dari udara untuk menghasilkan tenaga.",k:false,s:3,e:"Salah. Yang diambil adalah oksigen; karbon dioksida justru dikeluarkan."},
+{q:"Paru-paru manusia ada dua, di sebelah kanan dan kiri dada.",k:true,s:2,e:"Benar."}];
+// esai: tiap kriteria {r:regex, p:poin, t:teks}
+const ES=[
+{q:"Sebutkan tiga organ pernapasan beserta satu tugas masing-masing!",kunci:"Hidung (tempat udara masuk / menyaring debu / melembapkan / menghangatkan udara); batang tenggorok (saluran udara menuju paru-paru); paru-paru (tempat oksigen diambil / karbon dioksida dikeluarkan). 3 nama + 3 tugas, masing-masing 1.",
+ c:[{r:/hidung/,p:1,t:"Menyebut hidung"},{r:/(saring|debu|lembap|lembab|hangat|udara masuk|masuk)/,p:1,t:"Tugas hidung"},{r:/tenggorok/,p:1,t:"Menyebut batang tenggorok"},{r:/(saluran|jalan|alir|menuju paru|ke paru|menghubung)/,p:1,t:"Tugas batang tenggorok"},{r:/paru/,p:1,t:"Menyebut paru-paru"},{r:/(oksigen|karbon|co2|o2|tukar)/,p:1,t:"Tugas paru-paru"}]},
+{q:"Mengapa lebih baik bernapas lewat hidung daripada lewat mulut saat udara berdebu? Jelaskan!",kunci:"Hidung punya rambut halus dan lendir yang menyaring debu (1); udara yang masuk lebih bersih (1); udara juga dilembapkan dan dihangatkan (1).",
+ c:[{r:/(rambut|lendir|saring|filter)/,p:4,t:"Rambut halus dan lendir menyaring debu"},{r:/(bersih|tersaring|tidak ikut|tidak masuk|tak masuk|debu.*(tidak|tak)|(tidak|tak).*debu)/,p:4,t:"Udara yang masuk lebih bersih"},{r:/(lembap|lembab|hangat)/,p:4,t:"Udara dilembapkan dan dihangatkan"}]},
+{q:"Jika batang tenggorok tersumbat, apa yang terjadi pada udara yang masuk? Jelaskan!",kunci:"Batang tenggorok adalah saluran udara menuju paru-paru (1); udara tidak sampai ke paru-paru (1); tubuh sulit mendapat oksigen / sulit bernapas (1).",
+ c:[{r:/(saluran|jalan|menuju paru|ke paru|menghubung)/,p:4,t:"Batang tenggorok = saluran udara menuju paru-paru"},{r:/(tidak sampai|tak sampai|tidak bisa masuk|tidak masuk|terhenti|terhalang|tertahan|tidak dapat)/,p:4,t:"Udara tidak sampai ke paru-paru"},{r:/(oksigen|sesak|sulit bernapas|susah bernapas|tidak bisa bernapas|kekurangan)/,p:4,t:"Tubuh sulit mendapat oksigen / sulit bernapas"}]},
+{q:"Jelaskan apa yang terjadi di paru-paru saat menarik napas dan saat mengembuskan napas!",kunci:"Menarik napas: paru-paru mengembang (1), mengambil oksigen (1). Mengembuskan napas: paru-paru mengempis (1), mengeluarkan karbon dioksida (1).",
+ c:[{r:/(mengembang|membesar|kembang)/,p:2,t:"Menarik napas: paru-paru mengembang"},{r:/oksigen/,p:2,t:"Mengambil oksigen"},{r:/(mengempis|mengecil|kempis)/,p:2,t:"Mengembuskan: paru-paru mengempis"},{r:/(karbon|co2)/,p:2,t:"Mengeluarkan karbon dioksida"}]},
+{q:"Raka berkata, \"Udara yang kita embuskan keluar lewat jalur yang berbeda dengan udara yang kita hirup.\" Setujukah kamu? Jelaskan dengan menyebutkan urutan organnya!",kunci:"Tidak setuju (1); jalurnya sama, arahnya berlawanan (1). Menarik napas: hidung → batang tenggorok → paru-paru (1). Mengembuskan napas: paru-paru → batang tenggorok → hidung (1).",
+ c:[{r:/(tidak setuju|tidak sependapat|tidak benar|salah|^\s*tidak)/,p:4,t:"Tidak setuju"},{r:/(sama|searah|berlawanan|kebalikan|terbalik)/,p:4,t:"Jalurnya sama, arahnya berlawanan"},{r:/hidung.*tenggorok.*paru/,p:4,t:"Urutan menarik napas"},{r:/paru.*tenggorok.*hidung/,p:4,t:"Urutan mengembuskan napas"}]}];
+const ESS=[6,12,12,8,16];
+const ans={};let nama="",kelas="";
+const svg=`<svg viewBox="0 0 220 200" width="220" style="max-width:100%;display:block;margin:6px auto"><g stroke="#a63a2b" stroke-width="2"><ellipse cx="110" cy="28" rx="26" ry="18" fill="#f3c9bf"/><rect x="104" y="46" width="12" height="52" fill="#f3c9bf"/><path d="M104 98 Q60 100 52 140 Q54 172 88 170 Q106 164 106 130 Z" fill="#e58f84"/><path d="M116 98 Q160 100 168 140 Q166 172 132 170 Q114 164 114 130 Z" fill="#e58f84"/><ellipse cx="170" cy="185" rx="26" ry="12" fill="#f0b46c"/></g><g font:bold fill="#fff" font-size="12" font-family="sans-serif" text-anchor="middle"><circle cx="110" cy="28" r="10" fill="#444"/><text x="110" y="32">A</text><circle cx="110" cy="72" r="9" fill="#444"/><text x="110" y="76">B</text><circle cx="78" cy="140" r="10" fill="#444"/><text x="78" y="144">C</text><circle cx="170" cy="185" r="9" fill="#444"/><text x="170" y="189">D</text></g></svg>`;
+function mulai(){nama=$("nm").value.trim();kelas=$("kl").value.trim();
+if(!nama||!kelas){$("err").textContent="Isi nama dan kelas dulu ya.";return}
+$("start").classList.add("hid");$("quiz").classList.remove("hid");build();window.scrollTo(0,0)}
+function sec(t,i){return `<h2>${t}</h2><p class="mu">${i}</p>`}
+function build(){let h="";
+h+=sec("A. Pilihan Ganda","Pilih satu jawaban yang paling benar.");
+PG.forEach((p,i)=>{h+=`<div class="card" id="c${i+1}"><span class="pt">${p.s} poin</span><div class="q">${i+1}. ${p.q}</div>${p.img?svg+'<p class="mu" style="text-align:center">Ilustrasi sederhana organ pernapasan</p>':""}${p.o.map((o,j)=>`<label class="o"><input type="radio" name="q${i+1}" value="${j}" onchange="upd()">${"ABCD"[j]}. ${o}</label>`).join("")}<div class="fb hid"></div></div>`});
+h+=sec("B. Menjodohkan","Pilih nama atau zat yang cocok untuk setiap pernyataan (3 poin tiap soal).");
+h+=`<div class="card mu">${Object.entries(OP).map(([k,v])=>`<b>${k}.</b> ${v}`).join(" &nbsp;·&nbsp; ")}</div>`;
+MJ.forEach((m,i)=>{const n=6+i;h+=`<div class="card" id="c${n}"><div class="q">${n}. ${m.q}</div><select name="q${n}" onchange="upd()"><option value="">-- pilih --</option>${Object.entries(OP).map(([k,v])=>`<option value="${k}">${k}. ${v}</option>`).join("")}</select><div class="fb hid"></div></div>`});
+h+=sec("C. Benar atau Salah","Tentukan apakah pernyataan berikut benar atau salah.");
+BS.forEach((b,i)=>{const n=11+i;h+=`<div class="card" id="c${n}"><span class="pt">${b.s} poin</span><div class="q">${n}. ${b.q}</div><label class="o"><input type="radio" name="q${n}" value="1" onchange="upd()">Benar</label><label class="o"><input type="radio" name="q${n}" value="0" onchange="upd()">Salah</label><div class="fb hid"></div></div>`});
+h+=sec("D. Esai","Jawab dengan kalimat lengkap dan jelas.");
+ES.forEach((e,i)=>{const n=16+i;h+=`<div class="card" id="c${n}"><span class="pt">${ESS[i]} poin</span><div class="q">${n}. ${e.q}</div><textarea name="q${n}" oninput="upd()" placeholder="Tulis jawabanmu di sini..."></textarea><div class="fb hid"></div></div>`});
+$("soal").innerHTML=h;upd()}
+function val(n){const e=document.querySelector(`[name=q${n}]:checked`)||document.querySelector(`select[name=q${n}]`)||document.querySelector(`textarea[name=q${n}]`);return e?e.value.trim():""}
+function upd(){let d=0;for(let n=1;n<=20;n++)if(val(n)!=="")d++;$("pg").style.width=d*5+"%";$("pt").textContent=d+" dari 20 soal terjawab"}
+function fb(n,ok,html){const c=$("c"+n);c.classList.add(ok?"ok":"no");const f=c.querySelector(".fb");f.classList.remove("hid");f.innerHTML=html}
+function selesai(){let un=0;for(let n=1;n<=20;n++)if(val(n)==="")un++;
+if(un&&!confirm(un+" soal belum dijawab. Tetap kumpulkan?"))return;
+let sc={pg:0,mj:0,bs:0,es:0};
+PG.forEach((p,i)=>{const n=i+1,v=val(n),ok=v!==""&&+v===p.k;if(ok)sc.pg+=p.s;
+fb(n,ok,`${ok?"✅ Benar":"❌ Kurang tepat"} (+${ok?p.s:0}). Jawaban: <b>${"ABCD"[p.k]}. ${p.o[p.k]}</b>. ${p.e}`)});
+MJ.forEach((m,i)=>{const n=6+i,v=val(n),ok=v===m.k;if(ok)sc.mj+=MS;
+fb(n,ok,`${ok?"✅ Benar":"❌ Kurang tepat"} (+${ok?MS:0}). Jawaban: <b>${m.k}. ${OP[m.k]}</b>`)});
+BS.forEach((b,i)=>{const n=11+i,v=val(n),ok=v!==""&&(v==="1")===b.k;if(ok)sc.bs+=b.s;
+fb(n,ok,`${ok?"✅ Benar":"❌ Kurang tepat"} (+${ok?b.s:0}). ${b.e}`)});
+ES.forEach((e,i)=>{const n=16+i,v=val(n).toLowerCase();let got=0,list="";
+e.c.forEach(k=>{const m=v&&k.r.test(v);if(m)got+=k.p;list+=`<li>${m?"✔":"✘"} ${k.t} (${k.p})</li>`});
+sc.es+=got;fb(n,got===ESS[i],`<b>Skor otomatis: ${got} / ${ESS[i]}</b><ul style="margin:6px 0;padding-left:20px">${list}</ul><b>Kunci jawaban:</b> ${e.kunci}`)});
+const tot=sc.pg+sc.mj+sc.bs+sc.es;
+const msg=tot>=85?"Luar biasa! Pemahamanmu sangat baik. 🎉":tot>=70?"Bagus! Tinggal sedikit lagi untuk sempurna. 👍":tot>=50?"Cukup baik. Coba pelajari lagi bagian yang masih salah.":"Jangan menyerah! Baca lagi materinya, lalu coba lagi. 💪";
+$("hasil").innerHTML=`<div class="card" style="text-align:center"><div class="mu">Hasil Asesmen</div><h1>${esc(nama)}</h1><div class="mu">Kelas ${esc(kelas)}</div><p class="big">${tot}<span style="font-size:1.2rem;color:var(--mu)"> / 100</span></p><p>${msg}</p>
+<table style="text-align:left"><tr><td>Pilihan Ganda</td><td>${sc.pg} / 18</td></tr><tr><td>Menjodohkan</td><td>${sc.mj} / 15</td></tr><tr><td>Benar Salah</td><td>${sc.bs} / 13</td></tr><tr><td>Esai</td><td>${sc.es} / 54</td></tr></table>
+<p class="mu">Catatan: skor esai dinilai otomatis dari kata kunci, jadi guru dapat meninjau ulang jawaban esai.</p>
+<button onclick="window.print()">Cetak / Simpan PDF</button> <button class="s" onclick="document.getElementById('soal').scrollIntoView()">Lihat Pembahasan</button></div>`;
+$("hasil").classList.remove("hid");
+document.querySelectorAll("input,select,textarea").forEach(e=>e.disabled=true);
+document.querySelector("#quiz > button").classList.add("hid");
+$("quiz").insertBefore($("hasil"),$("quiz").firstChild);
+window.scrollTo({top:0,behavior:"smooth"})}
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+</script></body></html>
